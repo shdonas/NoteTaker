@@ -1,14 +1,14 @@
 const express = require('express')
 const app = express()
-const port = 3000
+const PORT = process.env.PORT || 5000
 var path = require('path');
 app.use(express.static('public'))
 
 var dbArray = require('./db/db.json')
 
 var bodyParser = require('body-parser')
-app.use(bodyParser.json());       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+app.use(bodyParser.json()); // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
     extended: true
 }));
 
@@ -29,6 +29,7 @@ app.get('/api/notes', function (req, res) {
     //res.sendFile(path.join(__dirname + '/public/notes.html'));
     res.json(dbArray)
 })
+
 app.delete('/api/notes/:id', function (req, res) {
     console.log('We hit the delete route!!', req.params)
 
@@ -44,8 +45,7 @@ app.delete('/api/notes/:id', function (req, res) {
         if (dbArray[i].id === parseInt(req.params.id)) {
             console.log('deleted', dbArray[i]);
 
-        }
-        else {
+        } else {
             console.log('we want to keep it', dbArray[i]);
             people.push(dbArray[i])
         }
@@ -62,8 +62,6 @@ app.delete('/api/notes/:id', function (req, res) {
     //res.sendFile(path.join(__dirname + '/public/notes.html'));
     res.json(dbArray)
 })
-
-
 
 app.post('/api/notes', function (req, res) {
     console.log('we hit the route!!!!!!', req.body)
